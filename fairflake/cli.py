@@ -1,16 +1,16 @@
 import click
 
 import fairflake.config as c
-import fairflake.unload as u
+import fairflake.unload as unl
 import fairflake.vpn as v
 
 
-@click.option("-c", "--connection", help="Snowsql connection name")
+@click.option("-c", "--connection", help="Snowsql connection name", default="development")
 @click.group()
 @click.pass_context
-def cli(ctx, connection=None):
+def cli(ctx, connection):
     ctx.ensure_object(dict)
-    ctx.obj["connection"] = connection or "development"
+    ctx.obj["connection"] = connection
 
 
 @click.argument("file_name", type=click.Path(dir_okay=False))
@@ -19,10 +19,20 @@ def cli(ctx, connection=None):
 @click.pass_context
 def table_to_csv(ctx, table_name: str, file_name):
     conn = c.get_connection(ctx.obj["connection"])
-    u.table_to_csv(conn, table_name, file_name)
+    unl.table_to_csv(conn, table_name, file_name)
 
 
 @cli.command()
 @click.pass_context
 def route_vpn(ctx):
     v.route_traffic(ctx.obj["connection"])
+
+
+@click.argument("file_name", type=click.Path(dir_okay=False))
+@click.option("-s", "--stage", help="Snowflake stage", default="~")
+@click.option("-p", "--path", help="Target folder in Snowflake stage", default="")
+@cli.command()
+@click.pass_context
+def upload(ctx, file_name, stage, path):
+    conn = c.get_connection(ctx.obj["connection"])
+    upload(conn, file_name, stage, path)
