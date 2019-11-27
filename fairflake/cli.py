@@ -2,6 +2,7 @@ import click
 
 import fairflake.config as c
 import fairflake.unload as unl
+import fairflake.upload as upl
 import fairflake.vpn as v
 
 
@@ -35,4 +36,4 @@ def route_vpn(ctx):
 @click.pass_context
 def upload(ctx, file_name, stage, path):
     conn = c.get_connection(ctx.obj["connection"])
-    upload(conn, file_name, stage, path)
+    upl.upload(conn, file_name, stage, path)
