@@ -27,7 +27,7 @@ def get_connection(connection_name: str):
     password = get_value(conf, connection_name, "password")
     dbname = get_value(conf, connection_name, "dbname")
     warehouse = get_value(conf, connection_name, "warehousename")
-    role = get_value(conf, connection_name, "role")
+    rolename = get_value(conf, connection_name, "rolename")
 
     engine = create_engine(
         URL(
@@ -37,7 +37,7 @@ def get_connection(connection_name: str):
             password=password,
             database=dbname,
             warehouse=warehouse,
-            role=role,
+            role=rolename,
         )
     )
 
