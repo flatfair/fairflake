@@ -6,7 +6,9 @@ import fairflake.upload as upl
 import fairflake.vpn as v
 
 
-@click.option("-c", "--connection", help="Snowsql connection name", default="development")
+@click.option(
+    "-c", "--connection", help="Snowsql connection name", default="development"
+)
 @click.group()
 @click.pass_context
 def cli(ctx, connection):
